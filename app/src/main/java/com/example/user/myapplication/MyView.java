@@ -19,7 +19,7 @@ public class MyView extends View {
     private Bitmap ballBmp;
     private Resources res;
     private Timer timer;
-    private float ballX, ballY, dx, dy, viewW, viewH, ballW, ballH;
+    private float ballX, ballY, dx, dy, viewW, viewH, ballW, ballH, ball2X, ball2Y, d2x, d2y;
 
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,7 +30,13 @@ public class MyView extends View {
         ballW = ballBmp.getWidth(); ballH = ballBmp.getHeight();
 
         dx = dy = 10;
+        d2x = d2y = 4;
+
+        ball2X = 70;
+        ball2Y = 40;
+
         timer.scheduleAtFixedRate(new BallTask(), 1*1000, 70);
+        timer.scheduleAtFixedRate(new Ball2Task(), 1*1000, 70);
 
     }
 
@@ -42,6 +48,7 @@ public class MyView extends View {
 
 
         canvas.drawBitmap(ballBmp, ballX, ballY, null);
+        canvas.drawBitmap(ballBmp, ball2X, ball2Y, null);
 
     }
 
@@ -61,5 +68,20 @@ public class MyView extends View {
         }
     }
 
+    private class Ball2Task extends TimerTask {
+        @Override
+        public void run() {
+            if (ball2X <0 || ball2X + ballW > viewW){
+                d2x *= -1;
+            }
+            if (ball2Y <0 || ball2Y + ballH > viewH){
+                d2y *= -1;
+            }
+
+            ball2X += d2x;
+            ball2Y += d2y;
+            postInvalidate();
+        }
+    }
 
 }
