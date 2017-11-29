@@ -19,7 +19,7 @@ public class MyView extends View {
     private Bitmap ballBmp;
     private Resources res;
     private Timer timer;
-    private float ballX, ballY, dx, dy;
+    private float ballX, ballY, dx, dy, viewW, viewH, ballW, ballH;
 
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,6 +27,7 @@ public class MyView extends View {
         timer = new Timer();
         res = context.getResources();
         ballBmp = BitmapFactory.decodeResource(res, R.drawable.ball);
+        ballW = ballBmp.getWidth(); ballH = ballBmp.getHeight();
 
         dx = dy = 10;
         timer.scheduleAtFixedRate(new BallTask(), 1*1000, 70);
@@ -37,6 +38,9 @@ public class MyView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        viewW = getWidth(); viewH = getHeight();
+
+
         canvas.drawBitmap(ballBmp, ballX, ballY, null);
 
     }
@@ -44,6 +48,13 @@ public class MyView extends View {
     private class BallTask extends TimerTask {
         @Override
         public void run() {
+            if (ballX <0 || ballX + ballW > viewW){
+                dx *= -1;
+            }
+            if (ballY <0 || ballY + ballH > viewH){
+                dy *= -1;
+            }
+
             ballX += dx;
             ballY += dy;
             postInvalidate();
