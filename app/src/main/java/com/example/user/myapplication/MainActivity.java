@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tv;
+    private MyHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handler = new MyHandler();
 
         tv = (TextView)findViewById(R.id.tv);
 
@@ -40,7 +43,14 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             for (int i=0; i<20; i++){
                 Log.i("brad", name + " = " + i);
-                tv.setText(name + " = " + i);
+
+                Message mesg = new Message();
+                Bundle data = new Bundle();
+                data.putString("name", name);
+                data.putInt("i", i);
+                mesg.setData(data);
+                handler.sendMessage(mesg);
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -55,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-
+            Bundle data = msg.getData();
+            tv.setText(data.getString("name") + " = " + data.getInt("i"));
 
         }
     }
