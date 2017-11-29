@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView tv;
+    private TextView tv, tv2;
     private MyHandler handler;
 
     @Override
@@ -20,12 +20,15 @@ public class MainActivity extends AppCompatActivity {
         handler = new MyHandler();
 
         tv = (TextView)findViewById(R.id.tv);
+        tv2 = (TextView)findViewById(R.id.tv2);
 
     }
 
     public void test1(View view){
         MyThread mt1 = new MyThread("A");
         mt1.start();
+        MyThread mt2 = new MyThread("B");
+        mt2.start();
     }
     public void test2(View view){
 
@@ -66,7 +69,12 @@ public class MainActivity extends AppCompatActivity {
             super.handleMessage(msg);
 
             Bundle data = msg.getData();
-            tv.setText(data.getString("name") + " = " + data.getInt("i"));
+            String name = data.getString("name");
+            if (name.equals("A")) {
+                tv.setText(name + " = " + data.getInt("i"));
+            }else if (name.equals("B")){
+                tv2.setText(name + " = " + data.getInt("i"));
+            }
 
         }
     }
