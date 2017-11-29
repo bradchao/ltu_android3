@@ -35,6 +35,7 @@ public class MyView extends View {
         ball2X = 70;
         ball2Y = 40;
 
+        timer.scheduleAtFixedRate(new RefreshView(), 1*1000, 70);
         timer.scheduleAtFixedRate(new BallTask(), 1*1000, 70);
         timer.scheduleAtFixedRate(new Ball2Task(), 1*1000, 70);
 
@@ -52,6 +53,13 @@ public class MyView extends View {
 
     }
 
+    private class RefreshView extends TimerTask {
+        @Override
+        public void run() {
+            postInvalidate();
+        }
+    }
+
     private class BallTask extends TimerTask {
         @Override
         public void run() {
@@ -64,7 +72,7 @@ public class MyView extends View {
 
             ballX += dx;
             ballY += dy;
-            postInvalidate();
+            //postInvalidate();
         }
     }
 
@@ -80,7 +88,7 @@ public class MyView extends View {
 
             ball2X += d2x;
             ball2Y += d2y;
-            postInvalidate();
+            //postInvalidate();
         }
     }
 
